@@ -27,44 +27,61 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const pathname = usePathname()
 
     useEffect(() => {
-        // MOCK USER: Bypass Supabase Auth per user request
-        const mockUser = { id: 'nexus-guest-123', email: 'convidado@nexuscapital.com', user_metadata: { full_name: 'Convidado Elite' } } as unknown as User
-        const mockSession = { user: mockUser, access_token: 'mock-token', refresh_token: 'mock-refresh' } as unknown as Session
-
-        // Delay slightly to simulate loading so UI doesn't blink weirdly
-        const timer = setTimeout(() => {
-            setUser(mockUser)
-            setSession(mockSession)
+        // Initial session fetch
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            setSession(session)
+            setUser(session?.user ?? null)
             setLoading(false)
-
-            // Auto-redirect from public routes to dashboard if accessing them directly
-            if (PUBLIC_ROUTES.includes(pathname)) {
-                router.push('/')
+            if (!session && !PUBLIC_ROUTES.includes(pathname)) {
+                router.push('/login')
             }
-        }, 500)
+        })
 
-        return () => clearTimeout(timer)
+        // Listen for auth changes
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(
+            (event, session) => {
+                setSession(session)
+                setUser(session?.user ?? null)
+                setLoading(false)
+
+                if (event === 'SIGNED_IN') {
+                    // Always navigate to the dashboard upon successful sign in
+                    router.push('/')
+                } else if (event === 'SIGNED_OUT') {
+                    router.push('/login')
+                } else if (!session && !PUBLIC_ROUTES.includes(pathname)) {
+                    router.push('/login')
+                }
+            }
+        )
+
+        return () => subscription.unsubscribe()
     }, [pathname, router])
 
     const signIn = async (email: string, password: string) => {
-        // Always succeed
-        router.push('/')
-        return { error: null }
+        return supabase.auth.signInWithPassword({ email, password })
     }
 
     const signUp = async (email: string, password: string, name: string) => {
-        // Always succeed
-        router.push('/')
-        return { data: { session: true }, error: null }
+        return await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                data: {
+                    full_name: name,
+                },
+            },
+        })
     }
 
     const signOut = async () => {
-        // Do nothing since we are bypassing auth, or navigate to login
-        router.push('/login')
+        await supabase.auth.signOut()
     }
 
     const resetPassword = async (email: string) => {
-        return { error: null }
+        return supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: `${window.location.origin}/reset-password`,
+        })
     }
 
     return (
