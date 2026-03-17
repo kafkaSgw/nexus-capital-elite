@@ -33,8 +33,9 @@ import ShareDashboard from '@/components/ShareDashboard'
 import ReceiptScanner from '@/components/ReceiptScanner'
 import OpenFinance from '@/components/OpenFinance'
 import { useAcademyProgress } from '@/hooks/useAcademyProgress'
-import LiveMarketBackground from '@/components/LiveMarketBackground'
 import WeeklySummary from '@/components/WeeklySummary'
+
+const LiveMarketBackground = dynamic(() => import('@/components/LiveMarketBackground'), { ssr: false })
 
 // Hook to detect mobile/touch devices
 function useIsMobile() {

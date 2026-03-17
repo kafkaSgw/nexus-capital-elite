@@ -104,7 +104,7 @@ export default function LiveMarketBackground({ sentiment = 'neutral' }: LiveMark
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
       // Initialize particles based on area (density)
-      const count = Math.min(Math.floor((w * h) / 12000), 120)
+      const count = Math.min(Math.floor((w * h) / 12000), 60)
       if (particlesRef.current.length === 0) {
         particlesRef.current = Array.from({ length: count }, () => createParticle(w, h))
       }

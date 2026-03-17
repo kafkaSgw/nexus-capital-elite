@@ -4,16 +4,17 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { useAuth } from '@/components/AuthProvider'
 import { usePathname } from 'next/navigation'
+import dynamic from 'next/dynamic'
 import Header from '@/components/Header'
-import AIChat from '@/components/AIChat'
-import NeuralBackground from '@/components/NeuralBackground'
 import SplashScreen from '@/components/SplashScreen'
 import PageTransition from '@/components/PageTransition'
-import PWAInstall from '@/components/PWAInstall'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import BottomNavBar from '@/components/BottomNavBar'
-
 import Breadcrumbs from '@/components/Breadcrumbs'
+
+const AIChat = dynamic(() => import('@/components/AIChat'), { ssr: false })
+const NeuralBackground = dynamic(() => import('@/components/NeuralBackground'), { ssr: false })
+const PWAInstall = dynamic(() => import('@/components/PWAInstall'), { ssr: false })
 
 const PUBLIC_ROUTES = ['/login', '/register', '/reset-password']
 

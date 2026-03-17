@@ -72,7 +72,7 @@ export default function NeuralBackground() {
                         width: 800,
                         height: 800,
                     },
-                    value: 40,
+                    value: 25,
                 },
                 opacity: {
                     value: 0.15,

@@ -37,10 +37,10 @@ export default function SplashScreen({ children }: { children: React.ReactNode }
                     setTimeout(() => {
                         setShow(false)
                         sessionStorage.setItem('nexus_splash_seen', 'true')
-                    }, 300)
+                    }, 100)
                     return 100
                 }
-                return prev + 4
+                return prev + 25
             })
         }, 50)
 
