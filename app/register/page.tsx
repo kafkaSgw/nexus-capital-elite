@@ -4,11 +4,13 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { useAuth } from '@/components/AuthProvider'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Mail, Lock, Eye, EyeOff, UserPlus, ArrowLeft, AlertCircle, CheckCircle, User } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 export default function RegisterPage() {
     const { signUp } = useAuth()
+    const router = useRouter()
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -35,7 +37,7 @@ export default function RegisterPage() {
         if (password !== confirmPassword) { setError('As senhas não coincidem'); return }
 
         setLoading(true)
-        const { error: authError } = await signUp(email.trim(), password, name.trim())
+        const { data, error: authError } = await signUp(email.trim(), password, name.trim())
         setLoading(false)
 
         if (authError) {
@@ -45,7 +47,12 @@ export default function RegisterPage() {
                 setError(authError.message)
             }
         } else {
-            setSuccess(true)
+            if (data?.session) {
+                // Auto login se a confirmação de email estiver desativada
+                router.push('/')
+            } else {
+                setSuccess(true)
+            }
         }
     }
 
@@ -74,8 +81,8 @@ export default function RegisterPage() {
                         </div>
                         <h2 className="text-2xl font-bold text-white mb-2">Conta criada!</h2>
                         <p className="text-gray-400 text-sm mb-6">
-                            Verifique seu email <strong className="text-white">{email}</strong> para confirmar sua conta.
-                            Depois, volte aqui para fazer login.
+                            Sua conta foi criada com sucesso! 
+                            Verifique seu email <strong className="text-white">{email}</strong> caso uma confirmação seja necessária, ou faça login diretamente.
                         </p>
                         <Link
                             href="/login"
