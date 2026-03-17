@@ -8,6 +8,7 @@ import {
 import { createCompany, createAccount, createTransaction } from '@/lib/supabase'
 import toast from 'react-hot-toast'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Portal } from '@/components/Portal'
 
 const ONBOARDING_KEY = 'nexus-onboarding-done'
 
@@ -289,9 +290,10 @@ export default function OnboardingWizard({ onComplete }: OnboardingWizardProps) 
     }
 
     return (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 animate-fade-in">
-            <div className="absolute inset-0 bg-black/70 backdrop-blur-md" />
-            <motion.div
+        <Portal>
+            <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 animate-fade-in" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}>
+                <div className="absolute inset-0 bg-black/70 backdrop-blur-md" />
+                <motion.div
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 className="relative bg-dark-card rounded-2xl max-w-lg w-full border border-dark-border shadow-corporate-lg overflow-hidden"
@@ -365,5 +367,6 @@ export default function OnboardingWizard({ onComplete }: OnboardingWizardProps) 
                 </div>
             </motion.div>
         </div>
+        </Portal>
     )
 }

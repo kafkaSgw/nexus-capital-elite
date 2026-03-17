@@ -22,9 +22,7 @@ import SparklineChart from '@/components/SparklineChart'
 import ExportReport from '@/components/ExportReport'
 import SmartInsights from '@/components/SmartInsights'
 import BankAccounts from '@/components/BankAccounts'
-import OnboardingWizard from '@/components/OnboardingWizard'
 import { SpotlightCard } from '@/components/SpotlightCard'
-import { GuidedTour } from '@/components/GuidedTour'
 import dynamic from 'next/dynamic'
 import Tilt from 'react-parallax-tilt'
 import { motion, Variants } from 'framer-motion'
@@ -324,12 +322,6 @@ export default function DashboardPage() {
       <div className="fixed inset-0 z-0 pointer-events-none">
         <LiveMarketBackground sentiment={marketSentiment} />
       </div>
-
-      {/* Onboarding */}
-      <OnboardingWizard onComplete={loadData} />
-
-      {/* Interactive Tech Tour */}
-      <GuidedTour />
 
       {/* Weekly Summary Digest */}
       <WeeklySummary />
