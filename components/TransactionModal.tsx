@@ -257,7 +257,7 @@ export default function TransactionModal({ isOpen, onClose, onSuccess, editingTr
             <div>
               <label className="label-premium">Acesso Rápido</label>
               <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none mt-1">
-                {TEMPLATES.map(t => (
+                {TEMPLATES.map((t: any) => (
                   <button key={t.name} type="button"
                     onClick={() => setFormData(prev => ({
                       ...prev,
@@ -318,7 +318,7 @@ export default function TransactionModal({ isOpen, onClose, onSuccess, editingTr
           <div>
             <label className="label-premium">Categoria</label>
             <select value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })} className="input-premium">
-              {CATEGORIES.map(cat => (<option key={cat} value={cat}>{cat}</option>))}
+              {CATEGORIES.map((cat: string) => (<option key={cat} value={cat}>{cat}</option>))}
             </select>
           </div>
 
@@ -328,7 +328,7 @@ export default function TransactionModal({ isOpen, onClose, onSuccess, editingTr
               <label className="label-premium">Conta</label>
               <select value={formData.account_id} onChange={(e) => setFormData({ ...formData, account_id: e.target.value })} className="input-premium">
                 <option value="">Sem conta vinculada</option>
-                {accounts.map(acc => (<option key={acc.id} value={acc.id}>{acc.name}{acc.bank ? ` (${acc.bank})` : ''}</option>))}
+                {accounts.map((acc: Account) => (<option key={acc.id} value={acc.id}>{acc.name}{acc.bank ? ` (${acc.bank})` : ''}</option>))}
               </select>
             </div>
           )}
@@ -338,7 +338,7 @@ export default function TransactionModal({ isOpen, onClose, onSuccess, editingTr
             <label className="label-premium">Empresa</label>
             <select value={formData.company_id} onChange={(e) => setFormData({ ...formData, company_id: e.target.value })} className="input-premium">
               <option value="">Pessoal (sem empresa)</option>
-              {companies.map(company => (<option key={company.id} value={company.id}>{company.name}</option>))}
+              {companies.map((company: any) => (<option key={company.id} value={company.id}>{company.name}</option>))}
             </select>
           </div>
 
@@ -395,7 +395,7 @@ export default function TransactionModal({ isOpen, onClose, onSuccess, editingTr
                 Anexos Existentes
               </label>
               <div className="mt-2 space-y-2">
-                {existingAttachments.map(att => (
+                {existingAttachments.map((att: any) => (
                   <div key={att.id} className="flex items-center justify-between p-2 bg-dark-card rounded-lg">
                     <div className="flex items-center gap-2">
                       <FileText className="w-4 h-4 text-primary" />

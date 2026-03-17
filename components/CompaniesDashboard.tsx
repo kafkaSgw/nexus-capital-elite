@@ -47,17 +47,17 @@ export default function CompaniesDashboard() {
           // Calcular estatísticas por empresa
           const companyStats = companiesData.map(company => {
             const companyTransactions = transactions.filter(
-              t => t.company_id === company.id
+              (t: any) => t.company_id === company.id
             )
 
             const income = companyTransactions
-              .filter(t => t.type === 'income')
-              .reduce((sum, t) => sum + t.amount, 0)
+              .filter((t: any) => t.type === 'income')
+              .reduce((sum: number, t: any) => sum + t.amount, 0)
 
             const expense = Math.abs(
               companyTransactions
-                .filter(t => t.type === 'expense')
-                .reduce((sum, t) => sum + t.amount, 0)
+                .filter((t: any) => t.type === 'expense')
+                .reduce((sum: number, t: any) => sum + t.amount, 0)
             )
 
             return {
@@ -69,7 +69,7 @@ export default function CompaniesDashboard() {
             }
           })
 
-          setStats(companyStats.sort((a, b) => b.income - a.income))
+          setStats(companyStats.sort((a: CompanyStats, b: CompanyStats) => b.income - a.income))
         }
       }
     } catch (error) {

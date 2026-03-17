@@ -95,7 +95,7 @@ export default function NotificationCenter() {
         .lte('due_date', new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0])
 
       if (scheduled && scheduled.length > 0) {
-        scheduled.forEach(item => {
+        scheduled.forEach((item: any) => {
           const daysLeft = Math.ceil((new Date(item.due_date).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
 
           notifs.push({
@@ -118,7 +118,7 @@ export default function NotificationCenter() {
         .limit(3)
 
       if (recentTransactions && recentTransactions.length > 0) {
-        recentTransactions.forEach(t => {
+        recentTransactions.forEach((t: any) => {
           if (t.type === 'income') {
             notifs.push({
               id: `transaction-${t.id}`,
@@ -138,7 +138,7 @@ export default function NotificationCenter() {
         .select('*')
 
       if (assets && assets.length > 0) {
-        assets.forEach(asset => {
+        assets.forEach((asset: any) => {
           const variation = ((asset.preco_atual - asset.preco_medio) / asset.preco_medio) * 100
 
           if (Math.abs(variation) > 10) {
@@ -163,7 +163,7 @@ export default function NotificationCenter() {
       // Filtrar notificações removidas e aplicar status de leitura
       const finalNotifs = notifs
         .filter(n => !removedIds.includes(n.id))
-        .map(n => ({
+        .map((n: Notification) => ({
           ...n,
           read: readIds.includes(n.id) ? true : n.read
         }))

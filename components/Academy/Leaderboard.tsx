@@ -54,7 +54,7 @@ export default function Leaderboard() {
 
       const localId = localStorage.getItem('nexus_device_id')
 
-      let formatted: LeaderboardEntry[] = (data || []).map((row, index) => ({
+      let formatted: LeaderboardEntry[] = (data || []).map((row: any, index: number) => ({
         user_id: row.user_id,
         xp: row.xp || 0,
         streak: row.streak || 0,

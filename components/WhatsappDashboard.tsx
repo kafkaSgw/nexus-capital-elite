@@ -69,11 +69,11 @@ export function WhatsappDashboard() {
 
     const totalEntradas = transactions
         .filter(t => t.transaction_type === 'Entrada')
-        .reduce((acc, curr) => acc + Number(curr.amount), 0);
+        .reduce((acc: number, curr: Transaction) => acc + Number(curr.amount), 0);
 
     const totalSaidas = transactions
         .filter(t => t.transaction_type === 'Saída')
-        .reduce((acc, curr) => acc + Number(curr.amount), 0);
+        .reduce((acc: number, curr: Transaction) => acc + Number(curr.amount), 0);
 
     return (
         <div className="space-y-6 animate-in fade-in duration-500">

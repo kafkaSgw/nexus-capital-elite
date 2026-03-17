@@ -90,7 +90,7 @@ export default function GlobalSearch() {
                 .limit(5)
 
             if (transactions) {
-                transactions.forEach(t => {
+                transactions.forEach((t: any) => {
                     allResults.push({
                         id: `tx-${t.id}`,
                         type: 'transaction',
@@ -111,7 +111,7 @@ export default function GlobalSearch() {
                 .limit(5)
 
             if (companies) {
-                companies.forEach(c => {
+                companies.forEach((c: any) => {
                     allResults.push({
                         id: `co-${c.id}`,
                         type: 'company',
@@ -132,7 +132,7 @@ export default function GlobalSearch() {
                 .limit(5)
 
             if (assets) {
-                assets.forEach(a => {
+                assets.forEach((a: any) => {
                     const variation = ((a.preco_atual - a.preco_medio) / a.preco_medio) * 100
                     allResults.push({
                         id: `asset-${a.id}`,
