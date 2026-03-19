@@ -141,7 +141,7 @@ export function GuidedTour() {
                         transition={{ type: "spring", stiffness: 90, damping: 20 }}
                         className="absolute rounded-2xl pointer-events-none z-[105]"
                         style={{
-                            boxShadow: '0 0 0 9999px rgba(5,7,11,0.85), 0 0 0 2px #00E5FF, 0 0 40px rgba(0,229,255,0.4), inset 0 0 20px rgba(0,229,255,0.1)',
+                            boxShadow: '0 0 0 9999px rgba(5,7,11,0.4), 0 0 0 2px #00E5FF, 0 0 40px rgba(0,229,255,0.4), inset 0 0 20px rgba(0,229,255,0.1)',
                             background: 'transparent'
                         }}
                     />

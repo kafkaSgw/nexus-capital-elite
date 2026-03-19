@@ -6,6 +6,9 @@ import { getTransactions, getAssets, getCompanies, Company } from '@/lib/supabas
 import { formatCurrency } from '@/lib/utils'
 import Link from 'next/link'
 import ForecastML from '@/components/ForecastML'
+import AIWealthManager from '@/components/AIWealthManager'
+import TaxOptimizer from '@/components/TaxOptimizer'
+import WealthMilestones from '@/components/WealthMilestones'
 import dynamic from 'next/dynamic'
 
 const SankeyDiagram = dynamic(() => import('@/components/SankeyDiagram'), { ssr: false, loading: () => <div className="h-[500px] w-full bg-dark-card/50 rounded-xl animate-pulse" /> })
@@ -156,6 +159,11 @@ export default function ExecutiveDashboard() {
             Valorização: {formatCurrency(currentValue - totalInvested)}
           </div>
         </div>
+      </div>
+
+      {/* AI Wealth Manager Widget */}
+      <div className="mb-6 sm:mb-8">
+        <AIWealthManager portfolioValue={totalInvested} />
       </div>
 
       {/* Performance por Empresa */}
@@ -405,6 +413,12 @@ export default function ExecutiveDashboard() {
             </ul>
           </div>
         </div>
+      </div>
+
+      {/* Planejamento & Conquistas */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <TaxOptimizer />
+        <WealthMilestones currentNetWorth={patrimony} />
       </div>
 
       {/* Sankey Diagram - Fluxo Financeiro */}
