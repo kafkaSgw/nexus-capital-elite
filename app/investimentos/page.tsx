@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useMemo } from 'react'
-import { Plus, RefreshCw, Trash2, TrendingUp, TrendingDown } from 'lucide-react'
+import { Plus, RefreshCw, Trash2, TrendingUp, TrendingDown, FileDown, Globe, Flame, LayoutDashboard } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import AssetModal from '@/components/AssetModal'
 import InvestmentPieChart from '@/components/InvestmentPieChart'
@@ -10,6 +10,9 @@ import DividendsDashboard from '@/components/DividendsDashboard'
 import PriceHistory from '@/components/PriceHistory'
 import LiveMarketBackground from '@/components/LiveMarketBackground'
 import PriceAlertNotifier from '@/components/PriceAlertNotifier'
+import GlobalAllocationMap from '@/components/GlobalAllocationMap'
+import FIRECalculator from '@/components/FIRECalculator'
+import PremiumReportModal from '@/components/PremiumReportModal'
 import { getAssets, deleteAsset, Asset } from '@/lib/supabase'
 import { formatCurrency, formatNumber, calculatePercentageChange } from '@/lib/utils'
 import axios from 'axios'
@@ -23,6 +26,8 @@ export default function InvestimentosPage() {
   const [loading, setLoading] = useState(true)
   const [updating, setUpdating] = useState(false)
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null)
+  const [activeTab, setActiveTab] = useState<'overview' | 'global' | 'fire'>('overview')
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false)
 
   const loadAssets = async () => {
     // Don't set global loading on reload to avoid flicker
@@ -127,33 +132,66 @@ export default function InvestimentosPage() {
       <div className="relative z-10">
       {/* Header */}
       <div className="mb-6 sm:mb-8 animate-fade-in">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div>
             <h1 className="text-2xl sm:text-4xl font-bold gradient-text font-mono mb-1 sm:mb-2">
               Carteira de Investimentos
             </h1>
-            <p className="text-gray-400 text-sm">
-              Acompanhe seus ativos em tempo real
+            <p className="text-gray-400 text-sm mb-4 lg:mb-0">
+              Gestão de ativos, exposição global e simulações FIRE
             </p>
           </div>
-          <div className="text-left sm:text-right">
-            <p className="text-xs text-gray-500 mb-1">
-              {lastUpdate ? `Atualizado em: ${lastUpdate.toLocaleTimeString('pt-BR')}` : 'Cotações desatualizadas'}
-            </p>
-            <button
-              onClick={updatePrices}
-              disabled={updating}
-              className="btn-secondary flex items-center gap-2 text-sm px-4 py-2"
-            >
-              <RefreshCw className={`w-4 h-4 ${updating ? 'animate-spin' : ''}`} />
-              {updating ? 'Atualizando...' : 'Atualizar'}
-            </button>
+          
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+            {/* Tabs */}
+            <div className="flex p-1 bg-dark-bg/80 backdrop-blur-md rounded-xl border border-dark-border/50 self-start sm:self-auto overflow-x-auto no-scrollbar max-w-full">
+               <button 
+                 onClick={() => setActiveTab('overview')} 
+                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 whitespace-nowrap ${activeTab === 'overview' ? 'bg-primary text-white shadow-lg' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+               >
+                 <LayoutDashboard className="w-4 h-4" /> <span className="hidden sm:inline">Visão Geral</span>
+               </button>
+               <button 
+                 onClick={() => setActiveTab('global')} 
+                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 whitespace-nowrap ${activeTab === 'global' ? 'bg-primary text-white shadow-lg' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+               >
+                 <Globe className="w-4 h-4" /> Global
+               </button>
+               <button 
+                 onClick={() => setActiveTab('fire')} 
+                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 whitespace-nowrap ${activeTab === 'fire' ? 'bg-primary text-white shadow-lg' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+               >
+                 <Flame className="w-4 h-4" /> FIRE
+               </button>
+            </div>
+
+            {/* Actions */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setIsReportModalOpen(true)}
+                className="btn-secondary flex items-center gap-2 text-sm px-4 py-2 whitespace-nowrap"
+              >
+                <FileDown className="w-4 h-4 hidden sm:block" /> Relatório
+              </button>
+              <div className="flex flex-col items-end">
+                <button
+                  onClick={updatePrices}
+                  disabled={updating}
+                  className="btn-primary flex items-center gap-2 text-sm px-4 py-2 whitespace-nowrap h-full"
+                >
+                  <RefreshCw className={`w-4 h-4 ${updating ? 'animate-spin' : ''}`} />
+                  <span className="hidden sm:inline">{updating ? 'Atualizando...' : 'Atualizar'}</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
+      {activeTab === 'overview' && (
+      <div className="space-y-6 sm:space-y-8 animate-fade-in">
       {/* Stats Resumo */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6">
         <div className="card-premium p-6 animate-slide-up" style={{ animationDelay: '0ms' }}>
           <p className="text-sm text-gray-400 mb-2">Total Investido</p>
           <p className="text-2xl font-bold number-font text-white">
@@ -380,8 +418,20 @@ export default function InvestimentosPage() {
           </div>
         )}
       </div>
+      </div>
+      )}
+
+      {activeTab === 'global' && (
+        <GlobalAllocationMap totalInvestido={totalInvestido} />
+      )}
+
+      {activeTab === 'fire' && (
+        <FIRECalculator patrimony={totalAtual > 0 ? totalAtual : totalInvestido} />
+      )}
 
       </div> {/* end z-10 content wrapper */}
+
+      <PremiumReportModal isOpen={isReportModalOpen} onClose={() => setIsReportModalOpen(false)} />
 
       {/* Modal */}
       <AssetModal
