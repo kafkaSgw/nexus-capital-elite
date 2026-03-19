@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { Wallet, LayoutDashboard, PieChart, Building2, Presentation, Search, Users, Volume2, VolumeX, GraduationCap, Menu, X, LogOut, FileDown, MoreHorizontal, CalendarDays, CreditCard, Settings, Gem, ShieldAlert } from 'lucide-react'
+import { Wallet, LayoutDashboard, PieChart, Building2, Presentation, Search, Users, Volume2, VolumeX, GraduationCap, Menu, X, LogOut, FileDown, MoreHorizontal, CalendarDays, CreditCard, Settings, Gem, ShieldAlert, Crown, Activity, Scale } from 'lucide-react'
 import NotificationCenter from './NotificationCenter'
 import GlobalSearch from './GlobalSearch'
 import XPSystem from './XPSystem'
@@ -24,6 +24,9 @@ const NAV_LINKS = [
   { href: '/investimentos', label: 'Investimentos', icon: Wallet },
   { href: '/ativos-alternativos', label: 'Alternativos', icon: Gem },
   { href: '/analise-risco', label: 'Risco', icon: ShieldAlert },
+  { href: '/concierge', label: 'Concierge', icon: Crown },
+  { href: '/macro', label: 'Terminal Macro', icon: Activity },
+  { href: '/sucessao', label: 'Sucessão', icon: Scale },
   { href: '/socios', label: 'Sócios', icon: Users },
   { href: '/academy', label: 'Academy', icon: GraduationCap },
   { href: '/calendario', label: 'Calendário', icon: CalendarDays },
@@ -99,6 +102,7 @@ export default function Header({ externalMenuOpen, onExternalMenuHandled }: { ex
                   <Link
                     key={href}
                     href={href}
+                    id={`tour-nav-${href.replace('/', '')}`}
                     className={`relative flex items-center gap-2 px-3 lg:px-4 py-2 rounded-xl transition-all duration-300 group ${isActive
                       ? 'text-white'
                       : 'text-gray-400 hover:text-white'
@@ -146,6 +150,7 @@ export default function Header({ externalMenuOpen, onExternalMenuHandled }: { ex
                         <Link
                           key={href}
                           href={href}
+                          id={`tour-nav-${href.replace('/', '')}`}
                           className={`flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${isActive ? 'text-white bg-primary/10' : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
                             }`}
                         >
@@ -314,6 +319,7 @@ export default function Header({ externalMenuOpen, onExternalMenuHandled }: { ex
                       >
                         <Link
                           href={href}
+                          id={`tour-nav-mobile-${href.replace('/', '')}`}
                           onClick={() => setMobileMenuOpen(false)}
                           className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm font-medium ${isActive
                             ? 'bg-gradient-to-r from-primary/15 to-primary/5 text-white border border-primary/20'

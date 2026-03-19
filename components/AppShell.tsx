@@ -13,6 +13,8 @@ import BottomNavBar from '@/components/BottomNavBar'
 import Breadcrumbs from '@/components/Breadcrumbs'
 
 const AIChat = dynamic(() => import('@/components/AIChat'), { ssr: false })
+const VoiceCopilot = dynamic(() => import('@/components/VoiceCopilot'), { ssr: false })
+const InteractiveShowcase = dynamic(() => import('@/components/InteractiveShowcase'), { ssr: false })
 const NeuralBackground = dynamic(() => import('@/components/NeuralBackground'), { ssr: false })
 const PWAInstall = dynamic(() => import('@/components/PWAInstall'), { ssr: false })
 
@@ -67,6 +69,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 </main>
                 <BottomNavBar onMenuOpen={() => setMobileMenuRequested(true)} />
                 <AIChat />
+                <VoiceCopilot />
+                <InteractiveShowcase />
                 <PWAInstall />
             </SplashScreen>
         </ErrorBoundary>
