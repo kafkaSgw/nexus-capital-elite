@@ -5,7 +5,8 @@ import {
   DollarSign, TrendingUp, TrendingDown, Plus, Wallet,
   PieChart, ArrowUpRight, ArrowDownRight, Sparkles,
   BarChart3, Target, Activity, Copy, FileText, Search, Edit,
-  GraduationCap, Flame, Zap, ChevronRight, LayoutDashboard, Check
+  GraduationCap, Flame, Zap, ChevronRight, LayoutDashboard, Check,
+  Trash2, Maximize2, Minimize2, GripVertical, Download, Building2, CalendarDays
 } from 'lucide-react'
 import Link from 'next/link'
 import { getTransactions, getAssets, Transaction, Asset, createTransaction, deleteTransaction } from '@/lib/supabase'
@@ -33,6 +34,8 @@ import ShareDashboard from '@/components/ShareDashboard'
 import ReceiptScanner from '@/components/ReceiptScanner'
 import OpenFinance from '@/components/OpenFinance'
 import { useAcademyProgress } from '@/hooks/useAcademyProgress'
+import WealthEvolution from '@/components/WealthEvolution'
+import SimpleForecast from '@/components/SimpleForecast'
 import WeeklySummary from '@/components/WeeklySummary'
 
 const LiveMarketBackground = dynamic(() => import('@/components/LiveMarketBackground'), { ssr: false })
@@ -76,7 +79,6 @@ const QuantumSimulator = dynamic(() => import('@/components/QuantumSimulator'), 
 const InteractiveNebula = dynamic(() => import('@/components/InteractiveNebula'), { ssr: false, loading: () => <div className="h-[400px] w-full bg-dark-card/50 rounded-xl animate-pulse" /> })
 
 import toast from 'react-hot-toast'
-import { Trash2 } from 'lucide-react'
 
 export default function DashboardPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
@@ -769,15 +771,37 @@ export default function DashboardPage() {
 
               {/* Bottom Section */}
               {sectionId === 'bottom-charts' && (
-              <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6 mt-8">
-        <CategoryBreakdown transactions={transactions} />
-        <FinancialRadar />
+              <motion.div variants={itemVariants} className="space-y-6 mt-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6">
+                  <CategoryBreakdown transactions={transactions} />
+                  <FinancialRadar />
+                </div>
+                <WealthEvolution currentWealth={patrimonio} />
               </motion.div>
               )}
 
               {/* Extra bottom grid for stats */}
               {sectionId === 'quick-stats' && (
-              <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6 mt-8">
+              <motion.div variants={itemVariants} className="space-y-6 mt-8">
+                {/* Simple Forecast */}
+                <SimpleForecast
+                  historicalData={(() => {
+                    const months: number[] = []
+                    for (let i = 5; i >= 0; i--) {
+                      const d = new Date()
+                      d.setMonth(d.getMonth() - i)
+                      const monthKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
+                      const monthIncome = transactions
+                        .filter(t => t.type === 'income' && t.created_at.startsWith(monthKey))
+                        .reduce((s, t) => s + t.amount, 0)
+                      if (monthIncome > 0) months.push(monthIncome)
+                    }
+                    return months.length >= 2 ? months : []
+                  })()}
+                  targetMonth={new Date(new Date().setMonth(new Date().getMonth() + 1)).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}
+                />
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6">
         {/* Quick Stats */}
         <div className="card-premium">
           <div className="p-5 border-b border-white/[0.04]">
@@ -833,6 +857,14 @@ export default function DashboardPage() {
               </span>
             </div>
 
+            <Link href="/calendario" className="flex items-center justify-between p-3 rounded-xl bg-primary/10 hover:bg-primary/20 transition-colors border border-primary/20 group">
+              <div className="flex items-center gap-3">
+                <CalendarDays className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium text-white">Contas a Vencer</span>
+              </div>
+              <ChevronRight className="w-4 h-4 text-primary opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+            </Link>
+
             {/* Margem de Lucro */}
             <div className="pt-4 mt-2 border-t border-white/[0.04]">
               <div className="flex items-center justify-between mb-2">
@@ -850,6 +882,7 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
+              </div>
       </motion.div>
               )}
             </SortableItem>

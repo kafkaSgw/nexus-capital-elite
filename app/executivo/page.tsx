@@ -9,6 +9,7 @@ import ForecastML from '@/components/ForecastML'
 import AIWealthManager from '@/components/AIWealthManager'
 import TaxOptimizer from '@/components/TaxOptimizer'
 import WealthMilestones from '@/components/WealthMilestones'
+import KPIDashboard from '@/components/KPIDashboard'
 import dynamic from 'next/dynamic'
 
 const SankeyDiagram = dynamic(() => import('@/components/SankeyDiagram'), { ssr: false, loading: () => <div className="h-[500px] w-full bg-dark-card/50 rounded-xl animate-pulse" /> })
@@ -159,6 +160,16 @@ export default function ExecutiveDashboard() {
             Valorização: {formatCurrency(currentValue - totalInvested)}
           </div>
         </div>
+      </div>
+
+      {/* KPI Dashboard */}
+      <div className="mb-6 sm:mb-8">
+        <KPIDashboard
+          transactions={transactions}
+          assets={assets}
+          currentMonth={new Date().getMonth()}
+          previousMonth={new Date().getMonth() === 0 ? 11 : new Date().getMonth() - 1}
+        />
       </div>
 
       {/* AI Wealth Manager Widget */}

@@ -322,12 +322,12 @@ export default function AnalisesPage() {
       </div>
 
       {/* Orçamento, Metas e Recorrentes */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+      <div id="orcamento" className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8 scroll-mt-24">
         <MonthlyBudget />
         <RecurringTransactions />
       </div>
 
-      <div className="mt-8">
+      <div id="metas" className="mt-8 scroll-mt-24">
         <FinancialGoals />
       </div>
     </div>

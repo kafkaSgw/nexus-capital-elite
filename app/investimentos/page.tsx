@@ -13,7 +13,8 @@ import PriceAlertNotifier from '@/components/PriceAlertNotifier'
 import GlobalAllocationMap from '@/components/GlobalAllocationMap'
 import FIRECalculator from '@/components/FIRECalculator'
 import PremiumReportModal from '@/components/PremiumReportModal'
-import { getAssets, deleteAsset, Asset } from '@/lib/supabase'
+import DividendAIProjection from '@/components/DividendAIProjection'
+import { getAssets, deleteAsset, Asset, getDividends, Dividend } from '@/lib/supabase'
 import { formatCurrency, formatNumber, calculatePercentageChange } from '@/lib/utils'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
@@ -28,6 +29,7 @@ export default function InvestimentosPage() {
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null)
   const [activeTab, setActiveTab] = useState<'overview' | 'global' | 'fire'>('overview')
   const [isReportModalOpen, setIsReportModalOpen] = useState(false)
+  const [dividends, setDividends] = useState<Dividend[]>([])
 
   const loadAssets = async () => {
     // Don't set global loading on reload to avoid flicker
@@ -64,6 +66,7 @@ export default function InvestimentosPage() {
 
   useEffect(() => {
     loadAssets()
+    loadDividends()
 
     // Initial update if needed, but let's just stick to manual + interval
     // Atualização automática a cada 5 minutos (300s) para não abusar da API
@@ -84,6 +87,15 @@ export default function InvestimentosPage() {
     } catch (error) {
       console.error('Erro ao deletar ativo:', error)
       toast.error('Erro ao excluir ativo')
+    }
+  }
+
+  const loadDividends = async () => {
+    try {
+      const data = await getDividends()
+      setDividends(data)
+    } catch (error) {
+      console.error('Erro ao carregar dividendos:', error)
     }
   }
 
@@ -259,6 +271,9 @@ export default function InvestimentosPage() {
       <div className="mb-8">
         <CryptoLive />
       </div>
+
+      {/* DividendAI Projection */}
+      <DividendAIProjection dividends={dividends} assets={assets} />
 
       {/* Tabela de Ativos */}
       <div className="card-premium animate-slide-up" style={{ animationDelay: '400ms' }}>

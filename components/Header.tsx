@@ -21,6 +21,8 @@ const NAV_LINKS = [
   { href: '/holding', label: 'Holding', icon: Building2 },
   { href: '/executivo', label: 'Executivo', icon: Presentation },
   { href: '/analises', label: 'Análises', icon: PieChart },
+  { href: '/analises#orcamento', label: 'Orçamento', icon: PieChart },
+  { href: '/analises#metas', label: 'Metas', icon: PieChart },
   { href: '/investimentos', label: 'Investimentos', icon: Wallet },
   { href: '/ativos-alternativos', label: 'Alternativos', icon: Gem },
   { href: '/analise-risco', label: 'Risco', icon: ShieldAlert },
